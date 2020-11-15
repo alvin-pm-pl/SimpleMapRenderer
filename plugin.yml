@@ -1,0 +1,5 @@
+name: SimpleMapRenderer
+author: alvin0319
+main: alvin0319\SimpleMapRenderer\SimpleMapRenderer
+version: 1.0.0
+api: 3.0.0
