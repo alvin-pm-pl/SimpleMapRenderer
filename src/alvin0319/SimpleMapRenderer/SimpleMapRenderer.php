@@ -30,6 +30,31 @@ namespace alvin0319\SimpleMapRenderer;
 
 use pocketmine\plugin\PluginBase;
 
-class SimpleMapRenderer extends PluginBase{
+use function is_dir;
+use function mkdir;
 
+class SimpleMapRenderer extends PluginBase{
+	/** @var SimpleMapRenderer|null */
+	private static $instance = null;
+	/** @var MapFactory */
+	protected $mapFactory;
+
+	public function onLoad() : void{
+		self::$instance = $this;
+	}
+
+	public static function getInstance() : SimpleMapRenderer{
+		return self::$instance;
+	}
+
+	public function onEnable() : void{
+		if(!is_dir($dir = $this->getDataFolder() . "images/")){
+			mkdir($dir);
+		}
+		$this->mapFactory = new MapFactory();
+	}
+
+	public function onDisable() : void{
+		$this->mapFactory->save();
+	}
 }
