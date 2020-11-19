@@ -72,6 +72,7 @@ final class MapFactory{
 			}
 		}
 		SimpleMapRenderer::getInstance()->getServer()->getAsyncPool()->submitTask(new MapImageFetchAsyncTask($res));
+		SimpleMapRenderer::getInstance()->getConfig()->set("mapId", $this->id);
 	}
 
 	public function save() : void{
