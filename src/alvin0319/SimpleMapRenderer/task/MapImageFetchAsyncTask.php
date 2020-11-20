@@ -64,7 +64,7 @@ class MapImageFetchAsyncTask extends AsyncTask{
 		$results = $this->getResult();
 
 		foreach($results as $id => $result){
-			MapFactory::getInstance()->registerData($id, $result);
+			MapFactory::getInstance()->updateColors($id, $result);
 		}
 	}
 
@@ -97,10 +97,11 @@ class MapImageFetchAsyncTask extends AsyncTask{
 		for($y = 0; $y < 128; $y++){
 			for($x = 0; $x < 128; $x++){
 				$rgb = imagecolorat($resource, $x, $y);
+				$a = (127 - (($rgb >> 24) & 0x7F)) * 2;
 				$r = ($rgb >> 16) & 0xff;
 				$g = ($rgb >> 8) & 0xff;
 				$b = $rgb & 0xff;
-				$xy[$y][$x] = new Color((int) $r, (int) $g, (int) $b);
+				$xy[$y][$x] = new Color((int) $r, (int) $g, (int) $b, (int) $a);
 			}
 		}
 		imagedestroy($resource);

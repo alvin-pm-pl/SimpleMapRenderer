@@ -28,8 +28,11 @@ declare(strict_types=1);
 
 namespace alvin0319\SimpleMapRenderer;
 
+use alvin0319\SimpleMapRenderer\item\EmptyMap;
+use alvin0319\SimpleMapRenderer\item\FilledMap;
+use pocketmine\item\Item;
+use pocketmine\item\ItemFactory;
 use pocketmine\plugin\PluginBase;
-
 use pocketmine\utils\Config;
 
 use function is_dir;
@@ -55,13 +58,28 @@ class SimpleMapRenderer extends PluginBase{
 		if(!is_dir($dir = $this->getDataFolder() . "images/")){
 			mkdir($dir);
 		}
+		if(!is_dir($dir = $this->getDataFolder() . "data/")){
+			mkdir($dir);
+		}
 		$this->saveResource("config.json");
 		$this->config = new Config($this->getDataFolder() . "config.json", Config::JSON);
 		$this->mapFactory = new MapFactory();
+
+		ItemFactory::registerItem(new FilledMap(), true);
+		ItemFactory::registerItem(new EmptyMap(), true);
+
+		Item::addCreativeItem(new EmptyMap());
+		//Item::addCreativeItem(new EmptyMap(2));
+
+		$this->getServer()->getPluginManager()->registerEvents(new EventListener(), $this);
 	}
 
 	public function onDisable() : void{
 		$this->mapFactory->save();
 		$this->getConfig()->save();
+	}
+
+	public function getConfig() : Config{
+		return $this->config;
 	}
 }

@@ -36,7 +36,6 @@ use function imagecreatefrompng;
 use function imagecreatetruecolor;
 use function imagedestroy;
 use function imagefill;
-use function imagepng;
 use function imagesavealpha;
 use function pathinfo;
 
@@ -76,10 +75,10 @@ class ImageUtil{
 		imagesavealpha($image, true);
 		for($y = 0; $y < 128; $y++){
 			for($x = 0; $x < 128; $x++){
-				//$color = new Color($data[$y][$x]["red"], $data[$y][$x]["green"], $data[$y][$x]["blue"]);
 				/** @var Color $color */
 				$color = $data[$y][$x];
-				imagefill($image, $x, $y, $color->toRGBA());
+				$col = imagecolorallocate($image, $color->getR(), $color->getG(), $color->getB());
+				imagefill($image, $x, $y, $col);
 			}
 		}
 		imagepng($image, $png);
