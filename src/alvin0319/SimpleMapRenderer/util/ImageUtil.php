@@ -36,6 +36,7 @@ use function imagecreatefrompng;
 use function imagecreatetruecolor;
 use function imagedestroy;
 use function imagefill;
+use function imagepng;
 use function imagesavealpha;
 use function pathinfo;
 
