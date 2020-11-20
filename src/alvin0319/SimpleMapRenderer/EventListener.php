@@ -49,7 +49,6 @@ class EventListener implements Listener{
 		$player = $event->getPlayer();
 		if($packet instanceof MapInfoRequestPacket){
 			$mapId = $packet->mapId;
-			/** @var FilledMap $item */
 			if(($mapData = MapFactory::getInstance()->getMapData($mapId)) !== null){
 				$event->setCancelled();
 				$this->sendMapInfo($player, $mapId, $mapData);
@@ -65,12 +64,11 @@ class EventListener implements Listener{
 			if($mapData->getDisplayPlayers()){
 				/**
 				 * @var int     $playerId
-				 * @var Vector3 $pos
 				 */
 				foreach($includePlayers as $playerId){
 					/** @var Player $target */
 					$target = $player->getServer()->findEntity($playerId);
-					$pk->trackedEntities[] = $this->getMapDecoration($mapData, $target);
+					$pk->decorations[] = $this->getMapDecoration($mapData, $target);
 				}
 			}
 		}
