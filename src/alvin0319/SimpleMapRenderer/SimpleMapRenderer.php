@@ -3,7 +3,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2020 alvin0319
+ * Copyright (c) 2020 - 2021 alvin0319
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,7 +33,10 @@ use alvin0319\SimpleMapRenderer\item\FilledMap;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\plugin\PluginBase;
+use pocketmine\plugin\PluginException;
 use pocketmine\utils\Config;
+
+use RuntimeException;
 
 use function is_dir;
 use function mkdir;
@@ -65,8 +68,12 @@ class SimpleMapRenderer extends PluginBase{
 		$this->config = new Config($this->getDataFolder() . "config.json", Config::JSON);
 		$this->mapFactory = new MapFactory();
 
-		ItemFactory::registerItem(new FilledMap(), true);
-		ItemFactory::registerItem(new EmptyMap(), true);
+		try{
+			ItemFactory::registerItem(new FilledMap());
+			ItemFactory::registerItem(new EmptyMap());
+		}catch(RuntimeException $e){
+			throw new PluginException("Another plugin is using the Map. Please disable other map-related plugins.");
+		}
 
 		Item::addCreativeItem(new EmptyMap());
 		//Item::addCreativeItem(new EmptyMap(2));
